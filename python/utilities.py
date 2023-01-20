@@ -1,3 +1,4 @@
+import pickle
 from tensorflow import keras
 from keras import models
 from network_model import compile_model
@@ -9,30 +10,6 @@ def make_labels_dict(classes_names: list) -> dict:
         classes_dict[classes_names[i]] = i
     return classes_dict
 
-
-DEF_MODEL_PATH = "../../Model/"
-
-def serialize_model(model, file_name):
-    # serialize model to JSON
-    model_json = model.to_json()
-    with open(DEF_MODEL_PATH+file_name+".json", "w") as json_file:
-        json_file.write(model_json)
-    # serialize weights to HDF5
-    model.save_weights(DEF_MODEL_PATH+file_name+".h5")
-    print("Saved model to disk")
-
-def desrialize_model(file_name):
-    # load json and create model
-    json_file = open(DEF_MODEL_PATH+file_name+".json", "r")
-    loaded_model_json = json_file.read()
-    json_file.close()
-    loaded_model = models.model_from_json(loaded_model_json)
-    # load weights into new model
-    loaded_model.load_weights(DEF_MODEL_PATH+file_name+".h5")
-    print("Loaded model from disk")
-    loaded_model = compile_model(loaded_model)
-    return loaded_model
-
 def shuffle_data(data_imgs: list, data_labels: list):
     temp = list(zip(data_imgs, data_labels))
     random.shuffle(temp)
@@ -41,3 +18,16 @@ def shuffle_data(data_imgs: list, data_labels: list):
     # res1 and res2 come out as tuples, and so must be converted to lists.
     res1, res2 = list(res1), list(res2)
     return res1, res2
+
+def get_paths(main_path, folders_names):
+    import os
+    def get_foldername(foldername, folders):
+        return list(filter(lambda x: foldername in x, folders))[0]
+    tmp_train = get_foldername('train', folders_names)
+    tmp_val = get_foldername('val', folders_names)
+    tmp_test = get_foldername('test', folders_names)
+    path_train = os.path.join(main_path, tmp_train)
+    path_val = os.path.join(main_path, tmp_val)
+    path_test = os.path.join(main_path, tmp_test)
+
+    return path_train, path_val, path_test
