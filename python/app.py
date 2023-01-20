@@ -3,7 +3,6 @@ import sys
 import config
 import subprocess
 import utilities as tools
-import face_recognition
 
 
 # cascPath = sys.argv[1]
@@ -16,6 +15,10 @@ if face_cascade.empty():
 cam_access = cv2.VideoCapture(config.camera_index)
 while True:
     tools.take_picture(cam_access, face_cascade)
+    if cv2.waitKey(1) == ord('q'):
+        # Print feedback
+        print('Camera Off')
+        break
 
 # print(config.action_performs[0].path)
 

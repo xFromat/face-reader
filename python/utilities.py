@@ -51,7 +51,3 @@ def take_picture(camera_stream, face_cascade):
         cv2.rectangle(frame, (x, y), (x+w, y+h), (255, 53, 18), 2)  # Rect for the face
 
     cv2.imshow('Video frame',frame)
-    if cv2.waitKey(1) == ord('q'):
-        # Print feedback
-        print('Camera Off')
-        return
