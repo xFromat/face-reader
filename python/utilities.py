@@ -1,8 +1,9 @@
-import pickle
 from tensorflow import keras
 from keras import models
 from network_model import compile_model
 import random
+import cv2
+import sys
 
 def make_labels_dict(classes_names: list) -> dict:
     classes_dict = {}
@@ -31,3 +32,26 @@ def get_paths(main_path, folders_names):
     path_test = os.path.join(main_path, tmp_test)
 
     return path_train, path_val, path_test
+
+def take_picture(camera_stream, face_cascade):
+    if camera_stream is None or not camera_stream.isOpened():
+        sys.exit("CAMERA NOT FOUND")
+
+    # t_msec = 1000*(0*60 + 10)
+    # camera_stream.set(cv2.CAP_PROP_POS_MSEC, t_msec)
+    ret, frame = camera_stream.read()
+
+    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    scale_factor = 1.3
+    min_neighbors=5
+    faces = face_cascade.detectMultiScale(gray, scale_factor, min_neighbors, minSize=(30, 30), flags=cv2.CASCADE_SCALE_IMAGE)
+    # Draw a rectangle around the faces
+    for (x, y, w, h) in faces:
+        # Draw rectangle in the face
+        cv2.rectangle(frame, (x, y), (x+w, y+h), (255, 53, 18), 2)  # Rect for the face
+
+    cv2.imshow('Video frame',frame)
+    if cv2.waitKey(1) == ord('q'):
+        # Print feedback
+        print('Camera Off')
+        return
