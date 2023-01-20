@@ -3,11 +3,12 @@ import sys
 import config
 import subprocess
 import utilities as tools
+import os
 
 
 # cascPath = sys.argv[1]
 
-face_cascade = cv2.CascadeClassifier("C:/Users/peter/eng_thesis/face-reader/haarcascade_frontalface_default.xml")
+face_cascade = cv2.CascadeClassifier(os.path.abspath('haarcascade_frontalface_default.xml'))
 
 if face_cascade.empty():
     print("not loaded")
