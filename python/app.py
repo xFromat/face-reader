@@ -4,6 +4,7 @@ import config
 import subprocess
 import utilities as tools
 import os
+import time
 
 
 # cascPath = sys.argv[1]
@@ -14,12 +15,15 @@ if face_cascade.empty():
     print("not loaded")
 
 cam_access = cv2.VideoCapture(config.camera_index)
+print("App started")
 while True:
     tools.take_picture(cam_access, face_cascade)
     if cv2.waitKey(1) == ord('q'):
         # Print feedback
         print('Camera Off')
         break
+        # break
+    time.sleep(1/config.fs)
 
 # print(config.action_performs[0].path)
 
