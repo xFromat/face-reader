@@ -60,17 +60,18 @@ def serialize_model(model, file_name, history_model):
         pickle.dump(history_model, file_pi)
     print("Saved model to disk")
 
-def desrialize_model(file_name):
+def desrialize_model(file_name, def_path = DEF_MODEL_PATH):
     # load json and create model
-    json_file = open(DEF_MODEL_PATH+file_name+".json", "r")
+    def_path = os.path.abspath(def_path)+"\\"
+    json_file = open(def_path+file_name+".json", "r")
     loaded_model_json = json_file.read()
     json_file.close()
     loaded_model = models.model_from_json(loaded_model_json)
     # load weights into new model
-    loaded_model.load_weights(DEF_MODEL_PATH+file_name+".h5")
+    loaded_model.load_weights(def_path+file_name+".h5")
     print("Loaded model from disk")
     loaded_model = compile_model(loaded_model)
     # history
-    with open(DEF_MODEL_PATH+file_name, "rb") as file_pi:
+    with open(def_path+file_name, "rb") as file_pi:
         history = pickle.load(file_pi)
     return loaded_model, history

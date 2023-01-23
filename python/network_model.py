@@ -3,9 +3,11 @@ from tensorflow import keras
 from keras import layers, optimizers as opt
 import numpy as np
 from keras.callbacks import EarlyStopping, ReduceLROnPlateau
+from PIL import Image
 
-def build_neural_model(img_shape: tuple, nuber_of_classes: int) -> keras.Sequential:
-    print(img_shape)
+IMG_SHAPE = (48, 48)
+
+def build_neural_model(nuber_of_classes: int, img_shape: tuple = IMG_SHAPE) -> keras.Sequential:
     # Set up the model
     model = keras.Sequential([
         # tf.keras.layers.experimental.preprocessing.Rescaling(1./255, input_shape=img_shape),
@@ -86,3 +88,12 @@ def train_model(model: keras.Sequential, imgs_train: np.array, labels_train: np.
 
 def evaluate_model(model: keras.Sequential, imgs_data, labels_data):
     return model.evaluate(imgs_data, labels_data, verbose = 0)
+
+def test_photo(model: keras.Sequential, photo: np.ndarray):
+    if photo is None:
+        print("test_photo(): No picture detected")
+        return
+    photo = np.asarray(Image.fromarray(photo).resize(IMG_SHAPE))
+    predicted_class = model.predict(photo.reshape([1, 48, 48]))
+    print(predicted_class)
+    return predicted_class.argmax()

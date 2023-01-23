@@ -248,3 +248,8 @@ modules.xml
 .idea/**/azureSettings.xml
 
 # End of https://www.toptal.com/developers/gitignore/api/pycharm
+
+*.jpg
+*.png
+*.tiff
+*.jpeg

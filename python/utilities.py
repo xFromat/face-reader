@@ -33,12 +33,10 @@ def get_paths(main_path, folders_names):
 
     return path_train, path_val, path_test
 
-def take_picture(camera_stream, face_cascade):
+def take_face_picture(camera_stream, face_cascade):
     if camera_stream is None or not camera_stream.isOpened():
         sys.exit("CAMERA NOT FOUND")
 
-    # t_msec = 1000*(0*60 + 10)
-    # camera_stream.set(cv2.CAP_PROP_POS_MSEC, t_msec)
     ret, frame = camera_stream.read()
 
     faces = detect_faces(frame, face_cascade)
@@ -49,12 +47,15 @@ def take_picture(camera_stream, face_cascade):
         return
     main_face = get_the_biggest(faces)
 
+    extracted_face = extract_faces(frame, main_face)
+
+    return extracted_face
     # Draw a rectangle around the faces
-    for (x, y, w, h) in main_face:
-        # Draw rectangle in the face
-        cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)  # Rect for the face
-        extract_faces(frame, x, y, w, h)
-    cv2.imshow('Video frame',frame)
+    # for (x, y, w, h) in main_face:
+    #     # Draw rectangle in the face
+    #     cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)  # Rect for the face
+    #     extract_faces(frame, x, y, w, h)
+    # cv2.imshow('Video frame',frame)
 
 def detect_faces(frame, classifier):
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
@@ -63,11 +64,11 @@ def detect_faces(frame, classifier):
     faces = classifier.detectMultiScale(gray, scale_factor, min_neighbors, minSize=(30, 30), flags=cv2.CASCADE_SCALE_IMAGE)
     return faces
 
-def extract_faces(image, x_0: int, y_0: int, width: int, height: int):
+def extract_faces(image, coordinates):
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    roi_gray = gray[y_0:y_0 + height, x_0:x_0 + width]
-    # cv2.imwrite(str(width) + str(height) + '_faces.jpg', biggest_face)
-    return roi_gray
+    face = gray[coordinates[1]:coordinates[1] + coordinates[3], coordinates[0]:coordinates[0] + coordinates[2]]
+    # cv2.imwrite(str(coordinates[2]) + str(coordinates[3]) + '_faces.jpg', face)
+    return face
 
 def get_the_biggest(coordinates_list):
     max_size = 0
@@ -77,4 +78,4 @@ def get_the_biggest(coordinates_list):
         if current_size > max_size:
             max_size = current_size
             max_array = [x, y, w, h]
-    return [max_array]
+    return max_array
