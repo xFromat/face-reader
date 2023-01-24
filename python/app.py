@@ -22,17 +22,17 @@ model, history_model = ld.desrialize_model("network_trained_model_3", ".\\model"
 
 cam_access = cv2.VideoCapture(config.camera_index)
 print("App started")
-while True:
-    face = tools.take_face_picture(cam_access, face_cascade)
-    if cv2.waitKey(1) == ord('q'):
-        # Print feedback
-        print('Camera Off')
-        break
-    print(nt.test_photo(model, face))
-    time.sleep(1/config.fs)
+# while True:
+#     face = tools.take_face_picture(cam_access, face_cascade)
+#     if cv2.waitKey(1) == ord('q'):
+#         # Print feedback
+#         print('Camera Off')
+#         break
+#     print(nt.test_photo(model, face))
+#     time.sleep(1/config.fs)
 
 # print(config.action_performs[0].path)
 
-# subprocess.Popen(config.action_performs[0].path)
+subprocess.Popen(config.action_performs[0].path)
 
 cam_access.release()
