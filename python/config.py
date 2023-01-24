@@ -13,6 +13,6 @@ action_performs: list = [
     my_classes.TargetElement("FILE", "C:\\Program Files\\Mozilla Firefox\\firefox.exe"),
     my_classes.TargetElement("FILE", "C:\\Users\\peter\\AppData\\Local\\Discord\\Update.exe --processStart Discord.exe"),
     my_classes.TargetElement("FILE", "C:\\Program Files\\Mozilla Firefox\\firefox.exe"),
-    my_classes.TargetElement("FILE", "C:\\Users\\peter\\AppData\\Local\\Discord\\Update.exe --processStart Discord.exe"),
+    my_classes.TargetElement("ACTION", command = "ls"),
     my_classes.TargetElement("ACTION", command = "shutdown -t 0 -r")
 ]

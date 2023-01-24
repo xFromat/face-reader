@@ -1,7 +1,4 @@
 from tensorflow import keras
-import numpy as np
-from network_model import compile_model
-import random
 import cv2
 import sys
 import load_data as ld
