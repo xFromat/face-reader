@@ -1,11 +1,11 @@
 import numpy as np
 import os
 from PIL import Image
-from utilities import shuffle_data
 from keras.utils import to_categorical
 import pickle
 from keras import models
 from network_model import compile_model
+import random
 
 def load_images(path) -> list:
     content_list = os.listdir(path)
@@ -43,6 +43,8 @@ def save_to_arr(classes: list, path, classes_numbers: dict) -> np.array:
         starting_ind+=len(temp)
 
     imgs, labels = shuffle_data(imgs, labels)
+    imgs, labels = shuffle_data(imgs, labels)
+    imgs, labels = shuffle_data(imgs, labels)
     imgs = np.asarray(imgs)
     labels = np.asarray(labels)
     return imgs, labels
@@ -75,3 +77,12 @@ def desrialize_model(file_name, def_path = DEF_MODEL_PATH):
     with open(def_path+file_name, "rb") as file_pi:
         history = pickle.load(file_pi)
     return loaded_model, history
+
+def shuffle_data(data_imgs: list, data_labels: list):
+    temp = list(zip(data_imgs, data_labels))
+    random.shuffle(temp)
+    random.shuffle(temp)
+    res1, res2 = zip(*temp)
+    # res1 and res2 come out as tuples, and so must be converted to lists.
+    res1, res2 = list(res1), list(res2)
+    return res1, res2

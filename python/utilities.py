@@ -4,6 +4,7 @@ from network_model import compile_model
 import random
 import cv2
 import sys
+import load_data as ld
 
 def make_labels_dict(classes_names: list) -> dict:
     classes_dict = {}
@@ -11,14 +12,6 @@ def make_labels_dict(classes_names: list) -> dict:
         classes_dict[classes_names[i]] = i
     return classes_dict
 
-def shuffle_data(data_imgs: list, data_labels: list):
-    temp = list(zip(data_imgs, data_labels))
-    random.shuffle(temp)
-    random.shuffle(temp)
-    res1, res2 = zip(*temp)
-    # res1 and res2 come out as tuples, and so must be converted to lists.
-    res1, res2 = list(res1), list(res2)
-    return res1, res2
 
 def get_paths(main_path, folders_names):
     import os
@@ -48,8 +41,8 @@ def take_face_picture(camera_stream, face_cascade):
     main_face = get_the_biggest(faces)
 
     extracted_face = extract_faces(frame, main_face)
-
-    return extracted_face
+    normalized_face = ld.normalize_data(extracted_face)
+    return normalized_face
     # Draw a rectangle around the faces
     # for (x, y, w, h) in main_face:
     #     # Draw rectangle in the face

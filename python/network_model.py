@@ -35,14 +35,12 @@ def build_neural_model(nuber_of_classes: int, img_shape: tuple = IMG_SHAPE) -> k
         layers.Conv2D(256, kernel_size=(3,3), activation='elu', kernel_initializer='he_normal', padding='same'),
         layers.BatchNormalization(),
         layers.MaxPooling2D(pool_size=(2,2)),
-        layers.Dropout(0.5),
+        layers.Dropout(0.6),
         layers.Flatten(),
         layers.BatchNormalization(),
-        layers.Dense(512, activation='softmax'),
+        layers.Dense(256, activation='relu'),
         layers.BatchNormalization(),
-        layers.Dense(256, activation='softmax'),
-        layers.BatchNormalization(),
-        layers.Dense(128, activation='softmax'),
+        layers.Dense(128, activation='relu'),
         layers.BatchNormalization(),
         layers.Dense(nuber_of_classes, activation='softmax')
     ])
@@ -54,10 +52,10 @@ def build_neural_model(nuber_of_classes: int, img_shape: tuple = IMG_SHAPE) -> k
 
 def compile_model(model: keras.Sequential) -> keras.Sequential:
     custom_optimizer = opt.Nadam(learning_rate=0.35)
-    model.compile(optimizer='nadam', loss=keras.losses.SparseCategoricalCrossentropy(), metrics=['accuracy'])
+    model.compile(optimizer='nadam', loss=keras.losses.SparseCategoricalCrossentropy(from_logits=True), metrics=['accuracy'])
     return model
 
-def train_model(model: keras.Sequential, imgs_train: np.array, labels_train: np.array, imgs_val: np.array, labels_val: np.array, epochs_number: int, classes_weights: dict) -> keras.Sequential:
+def train_model(model: keras.Sequential, imgs_train: np.array, labels_train: np.array, imgs_val: np.array, labels_val: np.array, epochs_number: int, classes_weights: dict = dict()) -> keras.Sequential:
     early_stopping = EarlyStopping(
         monitor='val_accuracy',
         min_delta=0.00005,
@@ -68,7 +66,7 @@ def train_model(model: keras.Sequential, imgs_train: np.array, labels_train: np.
 
     lr_scheduler = ReduceLROnPlateau(
         monitor='val_accuracy',
-        factor=0.5,
+        factor=0.6,
         patience=5,
         min_lr=1e-7,
         verbose=1,
@@ -78,11 +76,11 @@ def train_model(model: keras.Sequential, imgs_train: np.array, labels_train: np.
         early_stopping,
         lr_scheduler,
     ]
-    if len(classes_weights.keys) > 0:
+    if len(classes_weights) > 0:
         # Fit the model
         learned_model = model.fit(imgs_train, labels_train, validation_data = (imgs_val, labels_val), epochs = epochs_number, batch_size = 128, callbacks=callbacks, class_weight=classes_weights)
     else:
-        learned_model = model.fit(imgs_train, labels_train, validation_data = (imgs_val, labels_val), epochs = epochs_number, batch_size = 128, callbacks=callbacks)
+        learned_model = model.fit(imgs_train, labels_train, validation_data = (imgs_val, labels_val), epochs = epochs_number, batch_size = 256, callbacks=callbacks)
 
     return model, learned_model.history
 

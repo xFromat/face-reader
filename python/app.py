@@ -16,7 +16,7 @@ face_cascade = cv2.CascadeClassifier(os.path.abspath('haarcascade_frontalface_de
 if face_cascade.empty():
     print("not loaded")
 
-model, history_model = ld.desrialize_model("network_trained_model", ".\\model")
+model, history_model = ld.desrialize_model("network_trained_model_3", ".\\model")
 
 # classes = ld.get_classes_names(path_train)
 
