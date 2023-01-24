@@ -5,17 +5,24 @@ import load_data as ld
 import os
 import time
 import network_model as nt
+import sys
 
 face_cascade = cv2.CascadeClassifier(os.path.abspath('haarcascade_frontalface_default.xml'))
 
 if face_cascade.empty():
     print("not loaded")
 
-model, history_model = ld.desrialize_model("network_trained_model_3", ".\\model")
+try:
+    model, history_model = ld.desrialize_model("network_trained_model_3", ".\\model")
+except:
+    print("404: Classificator not found")
+    sys.exit()
 
 # classes = ld.get_classes_names(path_train)
 
 cam_access = cv2.VideoCapture(config.camera_index)
+if cam_access is None or not cam_access.isOpened():
+        sys.exit("CAMERA NOT FOUND")
 print("App started")
 while True:
     face = tools.take_face_picture(cam_access, face_cascade)
