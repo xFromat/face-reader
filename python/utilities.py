@@ -5,6 +5,8 @@ import random
 import cv2
 import sys
 import load_data as ld
+import TargetElement as my_class
+import subprocess
 
 def make_labels_dict(classes_names: list) -> dict:
     classes_dict = {}
@@ -72,3 +74,19 @@ def get_the_biggest(coordinates_list):
             max_size = current_size
             max_array = [x, y, w, h]
     return max_array
+
+def preform_action(command: my_class.TargetElement, is_windows: bool = False):
+    if command.action_type=="FILE":
+        open_program(command.path)
+        return
+    execute_command(command.command, is_windows)
+
+def open_program(path: str):
+    subprocess.Popen(path)
+
+def execute_command(command: str, is_windows: bool = False):
+    if is_windows:
+        output = subprocess.run(["powershell", "-Command", command], shell=True, capture_output=True)
+    else:
+        output = subprocess.run(command, shell=True, capture_output=True)
+    print(output)
