@@ -29,7 +29,7 @@ while True:
         print('Camera Off')
         break
     detected_class = nt.test_photo(model, face)
-    tools.preform_action(config.action_performs[detected_class], is_windows = config.IS_WINDOWS)
+    tools.preform_action(config.action_performs[1], is_windows = config.IS_WINDOWS)
     time.sleep(1/config.fs)
 
 cam_access.release()

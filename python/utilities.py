@@ -7,6 +7,8 @@ import sys
 import load_data as ld
 import TargetElement as my_class
 import subprocess
+from psutil import process_iter
+from ntpath import basename
 
 def make_labels_dict(classes_names: list) -> dict:
     classes_dict = {}
@@ -82,7 +84,11 @@ def preform_action(command: my_class.TargetElement, is_windows: bool = False):
     execute_command(command.command, is_windows)
 
 def open_program(path: str):
-    subprocess.Popen(path)
+    output = basename(path) in (i.name() for i in process_iter())
+    if not output:
+        subprocess.Popen(path)
+    else:
+        print("Process "+basename(path)+" is already running")
 
 def execute_command(command: str, is_windows: bool = False):
     if is_windows:
