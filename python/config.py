@@ -2,7 +2,7 @@ import TargetElement as my_classes
 
 camera_index = 0
 
-fs = 2 #Hz
+fs = .5 #Hz
 
 # PRE-CONFIGURED FOR WINDOWS, Unix systems => change flag to false and maybe predefined 
 # paths/commands
