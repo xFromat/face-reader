@@ -18,11 +18,11 @@ except:
     print("404: Classificator not found")
     sys.exit()
 
-# classes = ld.get_classes_names(path_train)
+classes = ld.get_classes_names("C:\\Users\peter\\eng_thesis\\Database\\V3_emotion_based\\test")
 
 cam_access = cv2.VideoCapture(config.camera_index)
 if cam_access is None or not cam_access.isOpened():
-        sys.exit("CAMERA NOT FOUND")
+    sys.exit("CAMERA NOT FOUND")
 print("App started")
 while True:
     face = tools.take_face_picture(cam_access, face_cascade)
@@ -31,9 +31,12 @@ while True:
         print('Camera Off')
         break
     detected_class = nt.test_photo(model, face)
-    print("Detected class number: "+str(detected_class))
     if detected_class is not None:
         tools.preform_action(config.action_performs[detected_class], is_windows = config.IS_WINDOWS)
+        # print("Detected class: "+str(detected_class)+": "+classes[detected_class])
+    # if cv2.waitKey(1) == ord('s'):
+    #     time.sleep(60)
+    #     break
     time.sleep(1/config.fs)
 
 cam_access.release()

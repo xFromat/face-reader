@@ -40,16 +40,12 @@ def take_face_picture(camera_stream, face_cascade):
     if faces_size[0] < 1 or faces_size[1] != 4:
         return
     main_face = get_the_biggest(faces)
-
+    # if len(main_face)==4:
+    #     cv2.rectangle(frame, (main_face[0], main_face[1]), (main_face[0]+main_face[2], main_face[1]+main_face[3]), (0, 255, 0), 2)  # Rect for the face
+    # cv2.imshow('Video frame',frame)
     extracted_face = extract_faces(frame, main_face)
     normalized_face = ld.normalize_data(extracted_face)
     return normalized_face
-    # Draw a rectangle around the faces
-    # for (x, y, w, h) in main_face:
-    #     # Draw rectangle in the face
-    #     cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)  # Rect for the face
-    #     extract_faces(frame, x, y, w, h)
-    # cv2.imshow('Video frame',frame)
 
 def detect_faces(frame, classifier):
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
