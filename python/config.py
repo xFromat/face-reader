@@ -4,8 +4,8 @@ camera_index = 0
 
 fs = 0.25 #Hz
 
-# PRE-CONFIGURED FOR WINDOWS, Unix systems => change flag to false na maybe predefined 
-# the paths/commands
+# PRE-CONFIGURED FOR WINDOWS, Unix systems => change flag to false and maybe predefined 
+# paths/commands
 IS_WINDOWS = True
 action_performs: list = [
     my_classes.TargetElement("FILE", "C:\\Program Files\\Mozilla Firefox\\firefox.exe"),
@@ -14,5 +14,5 @@ action_performs: list = [
     my_classes.TargetElement("ACTION", command="code"),
     my_classes.TargetElement("FILE", "C:\\Program Files\\Mozilla Firefox\\firefox.exe"),
     my_classes.TargetElement("ACTION", command = "ls"),
-    my_classes.TargetElement("ACTION", command = "shutdown -t 0 -r")
+    my_classes.TargetElement("ACTION", command = "shutdown -t 0 -r") #it won't go, 6 classes
 ]

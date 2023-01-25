@@ -52,7 +52,7 @@ def build_neural_model(nuber_of_classes: int, img_shape: tuple = IMG_SHAPE) -> k
 
 def compile_model(model: keras.Sequential) -> keras.Sequential:
     custom_optimizer = opt.Nadam(learning_rate=0.35)
-    model.compile(optimizer='nadam', loss=keras.losses.SparseCategoricalCrossentropy(from_logits=True), metrics=['accuracy'])
+    model.compile(optimizer='nadam', loss=keras.losses.SparseCategoricalCrossentropy(), metrics=['accuracy'])
     return model
 
 def train_model(model: keras.Sequential, imgs_train: np.array, labels_train: np.array, imgs_val: np.array, labels_val: np.array, epochs_number: int, classes_weights: dict = dict()) -> keras.Sequential:
